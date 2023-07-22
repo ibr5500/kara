@@ -1,28 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Routes, Route } from 'react-router-dom';
+import Home from './components/Home';
+import Courses from './components/Courses';
+import Students from './components/Students';
+import Course from './components/Course';
 import './App.css';
+import NavBar from './components/Navbar';
+import Login from './components/Login';
+import NewCourse from './components/NewCourse';
+import NewStudents from './components/NewStudents';
+import { auth } from './config/firebase-config';
+import Student from './components/Student';
 
-function App() {
+function App() { // eslint-disable-line
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit
-          {' '}
-          <code>src/App.tsx</code>
-          {' '}
-          and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {(auth.currentUser || sessionStorage.getItem('email')) ? <NavBar /> : null }
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/courses" element={<Courses />} />
+        <Route path="/courses/:courseId" element={<Course />} />
+        <Route path="/students" element={<Students />} />
+        <Route path="/students/:studentId" element={<Student />} />
+        <Route path="/course/new" element={<NewCourse />} />
+        <Route path="/student/new" element={<NewStudents />} />
+      </Routes>
     </div>
   );
 }
