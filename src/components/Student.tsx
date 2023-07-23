@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  getDoc, doc as document, deleteDoc, updateDoc,
+  getDoc, doc as document, deleteDoc, updateDoc, collection, getDocs, addDoc, orderBy, query,
 } from 'firebase/firestore';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -9,23 +9,55 @@ import {
 } from 'react-bootstrap';
 import { db } from '../config/firebase-config';
 
+type StudentData = {
+  id: any;
+  name: string;
+  age: number;
+  email: string;
+  image: string;
+  creation_at: string;
+}
+
 const Student: React.FC = (): JSX.Element => {
   const { studentId } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState<any>([]);
+  const [data, setData] = useState<StudentData>();
+  const [courses, setCourses] = useState<any[]>([]);
+  const [studentsCourses, setStudentsCourses] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const { register, handleSubmit, reset } = useForm<any>();
+  const { register, handleSubmit, reset } = useForm<StudentData>();
 
   const docRef = document(db, 'students', `${studentId}`);
+  const coursesRef = collection(db, 'courses');
+  const studentsCoursesRef = collection(db, 'students-courses');
 
-  const getdata = async (): Promise<void> => {
+  const qCourses = query(coursesRef, orderBy('creation_at', 'desc'));
+
+  const getdata = useCallback(async (): Promise<void> => {
     try {
       const studentData = await getDoc(docRef);
+      const coursesData = await getDocs(qCourses);
+      const junctionData = await getDocs(studentsCoursesRef);
+
+      const dataCourses = coursesData.docs.map((doc): object => ({
+        id: doc.id, ...doc.data(),
+      }));
+
+      const dataJunction = junctionData.docs.map((doc): object => ({
+        id: doc.id, ...doc.data(),
+      }));
+
       setData(studentData.data() as any);
+      setCourses(dataCourses as any);
+      setStudentsCourses(dataJunction as any);
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [docRef, qCourses, studentsCoursesRef]);
+
+  const stds = studentsCourses.map(
+    (item): any => ((item.student_id === studentId) ? item : ''),
+  );
 
   const deleteStudent = async (): Promise<void> => {
     navigate('/students');
@@ -33,7 +65,7 @@ const Student: React.FC = (): JSX.Element => {
     getdata();
   };
 
-  const onSubmit: SubmitHandler<any> = async (student: any): Promise<void> => {
+  const onSubmit: SubmitHandler<StudentData> = async (student: StudentData): Promise<void> => {
     await updateDoc(docRef, {
       ...student,
       name: student.name,
@@ -48,69 +80,129 @@ const Student: React.FC = (): JSX.Element => {
 
   const handleClose = (): void => setShowModal(false);
 
+  const assignCourse = async (courseID: any): Promise<void> => {
+    await addDoc(studentsCoursesRef, {
+      course_id: courseID,
+      student_id: studentId,
+    });
+    getdata();
+  };
+
+  const unassignCourse = async (itemID: any): Promise<void> => {
+    const delRef = document(db, 'students-courses', itemID);
+    await deleteDoc(delRef);
+    getdata();
+  };
+
   useEffect((): void => {
     getdata();
   }, [getdata]);
 
   return (
     <Container>
-      <Card key={data?.id} className="py-3">
-        <Card.Body className="text-secondary">
-          <Row>
-            <Col>
-              <Card.Title className="fs-3">
-                Student Name:
-                {' '}
-                {data?.name as string}
-              </Card.Title>
-            </Col>
-            <Col>
-              <Card.Text className="fs-6 mt-1">
-                Joind on Date:
-                {' '}
-                {data?.creation_at as string}
-              </Card.Text>
-            </Col>
-          </Row>
-          <hr />
-          <Row>
-            <Col>
-              <Card.Text className="fs-4">
-                Email:
-                {' '}
-                {data?.email as string}
-              </Card.Text>
-            </Col>
-            <Col>
-              <Card.Text className="fs-4">
-                Age:
-                {' '}
-                {data?.age as number}
-              </Card.Text>
-            </Col>
-          </Row>
-        </Card.Body>
-        <ButtonGroup className="w-25 m-auto" aria-label="Basic example">
-          <Button variant="outline-danger" onClick={() => deleteStudent()}>Delete Student</Button>
-          <Button variant="outline-secondary" onClick={() => setShowModal(true)}>Edit Student</Button>
-        </ButtonGroup>
-      </Card>
+      {data
+        ? (
+          <Card key={data?.id} className="py-3">
+            <Card.Body className="text-secondary">
+              <Row>
+                <Col>
+                  <Card.Img
+                    className="rounded"
+                    src={data?.image}
+                    alt={`${data?.name}'s avatar`}
+                  />
+                </Col>
+                <Col className="g-4">
+                  <Card.Title className="fs-3 mb-4">
+                    {data?.name as string}
+                  </Card.Title>
+                  <Card.Text className="fs-4">
+                    {' '}
+                    {data?.email as string}
+                  </Card.Text>
+                </Col>
+                <Col className="g-4 fs-5">
+                  <Card.Text className="mb-4">
+                    Joind on:
+                    {' '}
+                    {data?.creation_at as string}
+                  </Card.Text>
+                  <Card.Text>
+                    Age:
+                    {' '}
+                    {data?.age as number}
+                  </Card.Text>
+                </Col>
+              </Row>
+            </Card.Body>
+            <ButtonGroup className="w-25 m-auto" aria-label="Basic example">
+              <Button
+                variant="outline-danger"
+                onClick={(): any => deleteStudent()}
+              >
+                Delete Student
+              </Button>
+              <Button
+                variant="outline-secondary"
+                onClick={(): any => setShowModal(true)}
+              >
+                Edit Student
+              </Button>
+            </ButtonGroup>
+          </Card>
+        )
+        : ''}
       <Table>
         <thead>
           <tr>
             <th>#</th>
             <th>Course Name</th>
-            <th>Created Date</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <Form.Check />
-            </td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
+          {stds.map((item): any => (
+            (item !== '')
+              ? (
+                <tr key={item?.id}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked
+                      onChange={(): any => unassignCourse(item?.id)}
+                    />
+                  </td>
+                  <td>
+                    {courses.find(
+                      (course): boolean => course.id === item.course_id,
+                    )?.name}
+                  </td>
+                  <td>
+                    {courses.find(
+                      (course): boolean => course.id === item.course_id,
+                    )?.creation_at}
+                  </td>
+                </tr>
+              )
+              : ''
+          ))}
+          {courses.map((item): any => (
+            (!stds.find((i): boolean => i.course_id === item.id))
+              ? (
+                <tr key={item?.id}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={false}
+                      onChange={(): any => assignCourse(item.id)}
+                    />
+                  </td>
+                  <td>{item.name}</td>
+                  <td>{item.creation_at}</td>
+                </tr>
+              )
+              : ''
+          ))}
         </tbody>
       </Table>
       <Modal show={showModal} onHide={handleClose}>
@@ -132,6 +224,8 @@ const Student: React.FC = (): JSX.Element => {
               <FloatingLabel label="Student's Age">
                 <Form.Control
                   type="number"
+                  min={18}
+                  max={100}
                   defaultValue={data?.age}
                   {...register('age')}
                 />
