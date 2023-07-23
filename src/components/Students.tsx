@@ -36,23 +36,22 @@ const Students: React.FC = (): JSX.Element => {
 
   const q2 = query(studentRef, orderBy('creation_at', 'desc'));
 
-  const elems = (searchName === '' || searchDate === '') ? q2 : q;
+  const elems = (searchName === '' && searchDate === '') ? q2 : q;
 
-  const getdata = async () => {
-    try {
-      const studentsData = await getDocs(elems);
-      const data = studentsData.docs.map((doc) => ({
-        id: doc.id, ...doc.data(),
-      }));
-      setStudents(data as any);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
+  useEffect((): any => {
+    const getdata = async (): Promise<void> => {
+      try {
+        const studentsData = await getDocs(elems);
+        const data = studentsData.docs.map((doc): object => ({
+          id: doc.id, ...doc.data(),
+        }));
+        setStudents(data as any);
+      } catch (err) {
+        console.error(err);
+      }
+    };
     getdata();
-  }, [searchName, searchDate]);
+  });
 
   return (
     <Container>
@@ -64,9 +63,10 @@ const Students: React.FC = (): JSX.Element => {
               type="text"
               value={searchName}
               onChange={
-                (e) => setSearchName(
+                (e): any => setSearchName(
                   e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1),
-                )}
+                )
+}
             />
           </FloatingLabel>
           <FloatingLabel label="Search by date (YYYY-MM-DD)">
@@ -74,7 +74,7 @@ const Students: React.FC = (): JSX.Element => {
               className="fs-5"
               type="text"
               value={searchDate}
-              onChange={(e) => setSearchDate(e.target.value)}
+              onChange={(e): any => setSearchDate(e.target.value)}
             />
           </FloatingLabel>
         </Col>
@@ -83,11 +83,16 @@ const Students: React.FC = (): JSX.Element => {
         </Col>
       </Row>
       <Row xs={1} md={2} lg={3} className="g-4">
-        {students.map((student) => (
+        {students.map((student): any => (
           <Col key={student.id}>
             <Link className="text-decoration-none" to={`/students/${student.id}`}>
               <Card border="dark">
-                <Card.Img variant="top" className="mh-50" src={student.image} alt={`${student.name}'s avatar`} />
+                <Card.Img
+                  variant="top"
+                  className="mh-50"
+                  src={student.image}
+                  alt={`${student.name}'s avatar`}
+                />
                 <Card.Body>
                   <Card.Title>{student.name}</Card.Title>
                   <Card.Text>
