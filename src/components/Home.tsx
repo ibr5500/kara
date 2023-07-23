@@ -42,30 +42,27 @@ const Home: React.FC = (): JSX.Element => {
     limit(10),
   );
 
-  const getCoursesData = async (): Promise<void> => {
-    try {
-      const courseData = await getDocs(qCourses);
-      const data = courseData.docs.map((doc) :object => ({ id: doc.id, ...doc.data() }));
-      setCourses(data as any);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const getStudentsData = async (): Promise<void> => {
-    try {
-      const studentData = await getDocs(qStudents);
-      const data = studentData.docs.map((doc) :object => ({ id: doc.id, ...doc.data() }));
-      setStudents(data as any);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect((): any => {
-    getCoursesData();
-    getStudentsData();
-  }, [getCoursesData, getStudentsData]);
+    const getData = async (): Promise<void> => {
+      try {
+        const courseData = await getDocs(qCourses);
+        const studentData = await getDocs(qStudents);
+
+        const dataCourse = courseData.docs.map((doc) :object => ({
+          id: doc.id, ...doc.data(),
+        }));
+        setCourses(dataCourse as any);
+
+        const dataStudents = studentData.docs.map((doc) :object => ({
+          id: doc.id, ...doc.data(),
+        }));
+        setStudents(dataStudents as any);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getData();
+  });
 
   return (
     <div>
@@ -87,15 +84,29 @@ const Home: React.FC = (): JSX.Element => {
                     {courses.map((course): any => (
                       <tr key={course.id}>
                         <td>{course.name}</td>
-                        <td>{(course.description.length > 15) ? `${course.description.substring(0, 15)}...` : course.description }</td>
+                        <td>
+                          {(course.description.length > 15)
+                            ? `${course.description.substring(0, 15)}...`
+                            : course.description}
+                        </td>
                         <td>{course.creation_at}</td>
                         <td>
-                          <Link className="btn btn-outline-secondary mx-0" to={`/courses/${course.id}`}>Details</Link>
+                          <Link
+                            className="btn btn-outline-secondary mx-0"
+                            to={`/courses/${course.id}`}
+                          >
+                            Details
+                          </Link>
                         </td>
                       </tr>
                     ))}
                   </tbody>
-                  <Link className="btn btn-outline-info my-1" to="/courses">More Courses</Link>
+                  <Link
+                    className="btn btn-outline-info my-1"
+                    to="/courses"
+                  >
+                    More Courses
+                  </Link>
                 </Table>
               </Col>
               <Col>
@@ -115,12 +126,22 @@ const Home: React.FC = (): JSX.Element => {
                         <td>{student.email}</td>
                         <td>{student.creation_at}</td>
                         <td>
-                          <Link className="btn btn-outline-secondary" to={`/students/${student.id}`}>Details</Link>
+                          <Link
+                            className="btn btn-outline-secondary"
+                            to={`/students/${student.id}`}
+                          >
+                            Details
+                          </Link>
                         </td>
                       </tr>
                     ))}
                   </tbody>
-                  <Link className="btn btn-outline-info my-1" to="/students">More Student</Link>
+                  <Link
+                    className="btn btn-outline-info my-1"
+                    to="/students"
+                  >
+                    More Student
+                  </Link>
                 </Table>
               </Col>
             </Row>
