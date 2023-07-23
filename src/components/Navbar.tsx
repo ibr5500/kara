@@ -11,37 +11,47 @@ const NavBar: React.FC = (): JSX.Element => {
   const { handleSubmit } = useForm<any>();
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<any> = async () => {
+  const onSubmit: SubmitHandler<any> = async (): Promise<void> => {
     await signOut(auth);
     await sessionStorage.removeItem('email');
-    setTimeout(() => {
+    setTimeout((): any => {
       console.log('Logged out - successfully');
       navigate('/login');
     }, 1500);
   };
 
   return (
-    <Navbar expand="lg" className="p-3 bg-dark mb-3" sticky="top">
-      <Container fluid>
-        <Nav variant="underline" className="d-flex flex-row justify-content-between">
-          <div className="d-flex flex-row">
-            <Nav.Item>
-              <Nav.Link className="text-white" href="/">Home</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="text-white" href="/courses">Courses</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="text-white" href="/students">Students</Nav.Link>
-            </Nav.Item>
-          </div>
-        </Nav>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Form className="me-auto" onSubmit={handleSubmit(onSubmit)}>
-          <Button variant="outline-danger" className="" type="submit">
-            LogOut
-          </Button>
-        </Form>
+    <Navbar expand="lg" className="bg-light mb-3" sticky="top">
+      <Container className="d-flex flex-row">
+        <Navbar.Brand href="/">
+          <img
+            src="./kara_nbg.png"
+            width="50"
+            height="50"
+            className="d-inline-block align-top"
+            alt="React Bootstrap logo"
+          />
+        </Navbar.Brand>
+        {(auth.currentUser || sessionStorage.getItem('email'))
+          ? (
+            <Nav className="d-flex flex-row g-3 justify-content-end">
+              <Nav.Item className="mx-2">
+                <Nav.Link className="text-dark" href="/">Home</Nav.Link>
+              </Nav.Item>
+              <Nav.Item className="mx-2">
+                <Nav.Link className="text-dark" href="/courses">Courses</Nav.Link>
+              </Nav.Item>
+              <Nav.Item className="mx-2">
+                <Nav.Link className="text-dark" href="/students">Students</Nav.Link>
+              </Nav.Item>
+              <Form className="me-auto" onSubmit={handleSubmit(onSubmit)}>
+                <Button variant="outline-danger" className="" type="submit">
+                  LogOut
+                </Button>
+              </Form>
+            </Nav>
+          )
+          : ''}
       </Container>
     </Navbar>
   );
