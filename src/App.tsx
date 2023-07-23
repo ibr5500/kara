@@ -8,14 +8,13 @@ import './App.css';
 import NavBar from './components/Navbar';
 import Login from './components/Login';
 import NewCourse from './components/NewCourse';
-import NewStudents from './components/NewStudents';
-import { auth } from './config/firebase-config';
+import NewStudent from './components/NewStudent';
 import Student from './components/Student';
 
-function App() {
+function App(): JSX.Element {
   return (
     <div className="App">
-      {(auth.currentUser || sessionStorage.getItem('email')) ? <NavBar /> : null }
+      <NavBar />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
@@ -24,7 +23,7 @@ function App() {
         <Route path="/students" element={<Students />} />
         <Route path="/students/:studentId" element={<Student />} />
         <Route path="/course/new" element={<NewCourse />} />
-        <Route path="/student/new" element={<NewStudents />} />
+        <Route path="/student/new" element={<NewStudent />} />
       </Routes>
     </div>
   );
