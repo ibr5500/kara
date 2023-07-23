@@ -28,7 +28,7 @@ const NavBar: React.FC = (): JSX.Element => {
             src="./kara_nbg.png"
             width="50"
             height="50"
-            className="d-inline-block align-top"
+            className="d-inline-block align-top border border-success rounded-circle"
             alt="React Bootstrap logo"
           />
         </Navbar.Brand>
