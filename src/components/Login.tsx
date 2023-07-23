@@ -12,7 +12,7 @@ type UserData = {
   password: string;
 }
 
-const Login: React.FC = () => {
+const Login: React.FC = (): JSX.Element => {
   const { register, handleSubmit, reset } = useForm<UserData>();
 
   const navigate = useNavigate();
@@ -20,11 +20,9 @@ const Login: React.FC = () => {
   const onSubmit: SubmitHandler<UserData> = async (elem) => {
     await signInWithEmailAndPassword(auth, elem.email, elem.password);
     await sessionStorage.setItem('email', elem.email);
-    setTimeout(() => {
-      console.log('Admin logged in - successfully');
-      reset();
-      navigate('/');
-    }, 2500);
+    console.log('Admin logged in - successfully');
+    reset();
+    navigate('/');
   };
 
   // const LogOut = async () => {
@@ -46,10 +44,10 @@ const Login: React.FC = () => {
         <Row className="mt-5 me-auto">
           <Col className="mt-5 me-auto">
             <FloatingLabel label="Admin&apos;s Email address" className="m-3">
-              <Form.Control type="text" defaultValue="admin@gmail.com" {...register('email')} />
+              <Form.Control required type="text" defaultValue="admin@gmail.com" {...register('email')} />
             </FloatingLabel>
             <FloatingLabel label="Admin&apos;s Password" className="m-3">
-              <Form.Control type="password" placeholder="Password" {...register('password')} />
+              <Form.Control required type="password" placeholder="Password" {...register('password')} />
             </FloatingLabel>
           </Col>
         </Row>

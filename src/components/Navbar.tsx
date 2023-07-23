@@ -7,22 +7,9 @@ import {
 import { signOut } from 'firebase/auth';
 import { auth } from '../config/firebase-config';
 
-const NavBar: React.FC = () => {
-  const { register, handleSubmit } = useForm<any>();
+const NavBar: React.FC = (): JSX.Element => {
+  const { handleSubmit } = useForm<any>();
   const navigate = useNavigate();
-
-  // const LogOut = async () => {
-  //   try {
-  //     await signOut(auth);
-  //     sessionStorage.removeItem('email');
-  //     console.log('Logged out - successfully');
-  //     setTimeout(() => {
-  //       navigate('/login');
-  //     }, 3000);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
 
   const onSubmit: SubmitHandler<any> = async () => {
     await signOut(auth);

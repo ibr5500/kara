@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 
-const studentsRef = collection(db, 'students');
-const coursesRef = collection(db, 'courses');
-const studentCoursesRef = collection(db, 'students_courses');
-
-const JunctionTable = () => {
+const JunctionTable: React.FC = (): JSX.Element => {
   const [studentsCourses, setStudentsCourses] = useState<any[]>([]);
   const [students, setStudents] = useState<any[]>([]);
   const [courses, setCourses] = useState<any[]>([]);
+
+  const studentsRef = collection(db, 'students');
+  const coursesRef = collection(db, 'courses');
+  const studentCoursesRef = collection(db, 'students_courses');
 
   const getStundetsData = async () => {
     try {

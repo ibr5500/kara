@@ -2,7 +2,9 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { addDoc, collection } from 'firebase/firestore';
-import { Button, Form } from 'react-bootstrap';
+import {
+  Container, Button, Form, Col, FloatingLabel,
+} from 'react-bootstrap';
 import { db } from '../config/firebase-config';
 
 type FormValues = {
@@ -13,7 +15,7 @@ type FormValues = {
   image: string;
 };
 
-const NewStudents = () => {
+const NewStudents: React.FC = (): JSX.Element => {
   const { register, handleSubmit, reset } = useForm<FormValues>();
 
   const navigate = useNavigate();
@@ -26,14 +28,61 @@ const NewStudents = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} className="gap-3">
-      <Form.Control type="text" placeholder="Full Name" {...register('name')} />
-      <Form.Control type="email" defaultValue="email@example.com" placeholder="email@example.com" {...register('email')} />
-      <Form.Control type="number" placeholder="Age" {...register('age')} />
-      <Form.Control type="url" placeholder="Image's URL" {...register('image')} />
-      <Form.Control type="date" {...register('creation_at')} />
-      <Button type="submit" variant="success">Add a Student</Button>
-    </Form>
+    <Container className="mt-2 w-auto d-flex justify-content-center">
+      <Form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column w-50 gap-3">
+        <h2>Create New Student</h2>
+        <Col>
+          <FloatingLabel label="Student's Name">
+            <Form.Control
+              required
+              type="text"
+              placeholder="Full Name"
+              {...register('name')}
+            />
+          </FloatingLabel>
+        </Col>
+        <Col>
+          <FloatingLabel label="Student's Email">
+            <Form.Control
+              required
+              type="email"
+              placeholder="email@example.com"
+              {...register('email')}
+            />
+          </FloatingLabel>
+        </Col>
+        <Col>
+          <FloatingLabel label="Student's Age">
+            <Form.Control
+              required
+              type="number"
+              placeholder="Age"
+              {...register('age')}
+            />
+          </FloatingLabel>
+        </Col>
+        <Col>
+          <FloatingLabel label="Student's Image URL">
+            <Form.Control
+              required
+              type="url"
+              placeholder="Image's URL"
+              {...register('image')}
+            />
+          </FloatingLabel>
+        </Col>
+        <Col>
+          <FloatingLabel label="Join Date">
+            <Form.Control
+              required
+              type="date"
+              {...register('creation_at')}
+            />
+          </FloatingLabel>
+        </Col>
+        <Button type="submit" className="w-25 mx-5" variant="success">Add Student</Button>
+      </Form>
+    </Container>
   );
 };
 

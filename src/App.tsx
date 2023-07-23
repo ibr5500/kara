@@ -12,7 +12,7 @@ import NewStudents from './components/NewStudents';
 import { auth } from './config/firebase-config';
 import Student from './components/Student';
 
-function App() { // eslint-disable-line
+function App() {
   return (
     <div className="App">
       {(auth.currentUser || sessionStorage.getItem('email')) ? <NavBar /> : null }

@@ -17,7 +17,7 @@ type Course = {
   creation_at: string;
 }
 
-const Courses: React.FC = () => {
+const Courses: React.FC = (): JSX.Element => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [searchName, setSearchName] = useState<string>('');
   const [searchDate, setSearchDate] = useState<string>('');
@@ -57,9 +57,9 @@ const Courses: React.FC = () => {
   const handlePageClick = ({ selected }: { selected: number }) => setCurrentPage(selected);
 
   return (
-    <Container>
-      <Row className="mb-4">
-        <Col className="mt-2 d-flex g-4">
+    <Container className="my-0">
+      <Row className="mb-2">
+        <Col className="d-flex g-4">
           <FloatingLabel label="Search by name" className="me-2">
             <Form.Control
               className="fs-5"
@@ -77,11 +77,11 @@ const Courses: React.FC = () => {
             />
           </FloatingLabel>
         </Col>
-        <Col>
-          <Link className="btn btn-success" to="/student/new">New Student</Link>
+        <Col className="mt-3">
+          <Link className="btn btn-success" to="/course/new">New Course</Link>
         </Col>
       </Row>
-      <Table className="border border-dark p-3">
+      <Table className="border border-dark p-0">
         <thead>
           <tr>
             <th>Course Name</th>
@@ -97,7 +97,7 @@ const Courses: React.FC = () => {
               <td>{(c.description.length > 50) ? `${c.description.substring(0, 50)}...` : c.description}</td>
               <td>{c.creation_at}</td>
               <td>
-                <Link to={`/courses/${c.id}`}>Details</Link>
+                <Link className="btn btn-secondary p-1 m-0" to={`/courses/${c.id}`}>Details</Link>
               </td>
             </tr>
           ))}
@@ -105,12 +105,15 @@ const Courses: React.FC = () => {
       </Table>
       <Row>
         <ReactPaginate
-          previousLabel={<FcPrevious />}
-          nextLabel={<FcNext />}
+          previousLabel={<FcPrevious className="fs-4" />}
+          nextLabel={<FcNext className="fs-4" />}
           pageCount={pageCount}
           onPageChange={handlePageClick}
-          containerClassName="pagination d-flex g-5 justify-content-center"
-          activeClassName="active"
+          breakLabel="..."
+          containerClassName="pagination d-flex justify-content-center"
+          activeLinkClassName="active fw-bold text-decoration-none"
+          renderOnZeroPageCount={null}
+          pageClassName="page-item px-2 text-dark"
         />
       </Row>
     </Container>

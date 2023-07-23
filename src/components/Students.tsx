@@ -3,7 +3,7 @@ import React, {
 }
   from 'react';
 import {
-  collection, doc as document, getDocs, deleteDoc, orderBy, query, where,
+  collection, getDocs, orderBy, query, where,
 } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import {
@@ -20,7 +20,7 @@ type Student = {
   creation_at: string;
 }
 
-const Students = () => {
+const Students: React.FC = (): JSX.Element => {
   const [students, setStudents] = useState<Student[]>([]);
   const [searchName, setSearchName] = useState<string>('');
   const [searchDate, setSearchDate] = useState<string>('');
@@ -50,15 +50,9 @@ const Students = () => {
     }
   };
 
-  const deletStudent = async (id: string) => {
-    const student = document(db, 'students', id);
-    await deleteDoc(student);
-    getdata();
-  };
-
   useEffect(() => {
     getdata();
-  }, [getdata]);
+  }, [searchName, searchDate]);
 
   return (
     <Container>
@@ -69,7 +63,10 @@ const Students = () => {
               className="fs-5"
               type="text"
               value={searchName}
-              onChange={(e) => setSearchName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
+              onChange={
+                (e) => setSearchName(
+                  e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1),
+                )}
             />
           </FloatingLabel>
           <FloatingLabel label="Search by date (YYYY-MM-DD)">
@@ -90,7 +87,7 @@ const Students = () => {
           <Col key={student.id}>
             <Link className="text-decoration-none" to={`/students/${student.id}`}>
               <Card border="dark">
-                <Card.Img variant="top" src={student.image} alt={student.name} />
+                <Card.Img variant="top" className="mh-50" src={student.image} alt={`${student.name}'s avatar`} />
                 <Card.Body>
                   <Card.Title>{student.name}</Card.Title>
                   <Card.Text>
