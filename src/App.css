@@ -1,5 +1,26 @@
+body {
+  background: #F7FFE5;
+}
+
 .App {
   text-align: center;
+  color: #17594A;
+}
+
+nav {
+  background: #E1ECC8;
+}
+
+.logout {
+  color: #a13d3d;
+  border-color: #a13d3d;
+  margin: 0 0 0 30px;
+}
+
+.logout:hover {
+  color: #F7FFE5;
+  border-color: #F7FFE5;
+  background-color: #a13d3d;
 }
 
 .App-logo {

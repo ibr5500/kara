@@ -56,8 +56,8 @@ const Students: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Row className="mb-4">
-        <Col className="mt-2 d-flex g-4">
-          <FloatingLabel label="Search by name" className="me-2">
+        <Col className="mt-2 d-flex g-4 w-100">
+          <FloatingLabel label="Search by name" className="w-50 me-2">
             <Form.Control
               className="fs-5"
               type="text"
@@ -69,7 +69,7 @@ const Students: React.FC = (): JSX.Element => {
 }
             />
           </FloatingLabel>
-          <FloatingLabel label="Search by date (YYYY-MM-DD)">
+          <FloatingLabel className="w-50" label="Search by date (YYYY-MM-DD)">
             <Form.Control
               className="fs-5"
               type="text"

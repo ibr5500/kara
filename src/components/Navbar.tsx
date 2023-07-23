@@ -21,7 +21,7 @@ const NavBar: React.FC = (): JSX.Element => {
   };
 
   return (
-    <Navbar expand="lg" className="bg-light mb-3" sticky="top">
+    <Navbar expand="lg" className="mb-3" sticky="top">
       <Container className="d-flex flex-row">
         <Navbar.Brand href="/">
           <img
@@ -36,16 +36,16 @@ const NavBar: React.FC = (): JSX.Element => {
           ? (
             <Nav className="d-flex flex-row g-3 justify-content-end">
               <Nav.Item className="mx-2">
-                <Nav.Link className="text-dark" href="/">Home</Nav.Link>
+                <Nav.Link href="/">Home</Nav.Link>
               </Nav.Item>
               <Nav.Item className="mx-2">
-                <Nav.Link className="text-dark" href="/courses">Courses</Nav.Link>
+                <Nav.Link href="/courses">Courses</Nav.Link>
               </Nav.Item>
               <Nav.Item className="mx-2">
-                <Nav.Link className="text-dark" href="/students">Students</Nav.Link>
+                <Nav.Link href="/students">Students</Nav.Link>
               </Nav.Item>
               <Form className="me-auto" onSubmit={handleSubmit(onSubmit)}>
-                <Button variant="outline-danger" className="" type="submit">
+                <Button variant="outline-danger" className="logout" type="submit">
                   LogOut
                 </Button>
               </Form>
