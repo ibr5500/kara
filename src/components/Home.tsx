@@ -48,12 +48,12 @@ const Home: React.FC = (): JSX.Element => {
         const courseData = await getDocs(qCourses);
         const studentData = await getDocs(qStudents);
 
-        const dataCourse = courseData.docs.map((doc) :object => ({
+        const dataCourse = courseData.docs.map((doc): object => ({
           id: doc.id, ...doc.data(),
         }));
         setCourses(dataCourse as any);
 
-        const dataStudents = studentData.docs.map((doc) :object => ({
+        const dataStudents = studentData.docs.map((doc): object => ({
           id: doc.id, ...doc.data(),
         }));
         setStudents(dataStudents as any);

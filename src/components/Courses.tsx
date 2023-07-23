@@ -37,24 +37,26 @@ const Courses: React.FC = (): JSX.Element => {
 
   const elems = (searchName === '' || searchDate === '') ? q2 : q;
 
-  const getdata = async () => {
-    try {
-      const courseData = await getDocs(elems);
-      const data = courseData.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setCourses(data as any);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
+  useEffect((): any => {
+    const getdata = async (): Promise<void> => {
+      try {
+        const courseData = await getDocs(elems);
+        const data = courseData.docs.map((doc): object => ({ id: doc.id, ...doc.data() }));
+        setCourses(data as any);
+      } catch (err) {
+        console.error(err);
+      }
+    };
     getdata();
-  }, [searchName, searchDate]);
+  });
 
   const pageCount = Math.ceil(courses.length / coursesPerPage);
-  const pageCourses = courses.slice(currentPage * coursesPerPage, (currentPage + 1) * coursesPerPage);
+  const pageCourses = courses.slice(
+    currentPage * coursesPerPage,
+    (currentPage + 1) * coursesPerPage,
+  );
 
-  const handlePageClick = ({ selected }: { selected: number }) => setCurrentPage(selected);
+  const handlePage = ({ selected }: { selected: number }): any => setCurrentPage(selected);
 
   return (
     <Container className="my-0">
@@ -65,7 +67,9 @@ const Courses: React.FC = (): JSX.Element => {
               className="fs-5"
               type="text"
               value={searchName}
-              onChange={(e) => setSearchName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
+              onChange={(e): any => setSearchName(
+                e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1),
+              )}
             />
           </FloatingLabel>
           <FloatingLabel label="Search by date (YYYY-MM-DD)">
@@ -73,7 +77,7 @@ const Courses: React.FC = (): JSX.Element => {
               className="fs-5"
               type="text"
               value={searchDate}
-              onChange={(e) => setSearchDate(e.target.value)}
+              onChange={(e): any => setSearchDate(e.target.value)}
             />
           </FloatingLabel>
         </Col>
@@ -91,13 +95,22 @@ const Courses: React.FC = (): JSX.Element => {
           </tr>
         </thead>
         <tbody>
-          { pageCourses.map((c) => (
+          { pageCourses.map((c): any => (
             <tr key={c.id}>
               <td>{c.name}</td>
-              <td>{(c.description.length > 50) ? `${c.description.substring(0, 50)}...` : c.description}</td>
+              <td>
+                {(c.description.length > 50)
+                  ? `${c.description.substring(0, 50)}...`
+                  : c.description}
+              </td>
               <td>{c.creation_at}</td>
               <td>
-                <Link className="btn btn-secondary p-1 m-0" to={`/courses/${c.id}`}>Details</Link>
+                <Link
+                  className="btn btn-secondary p-1 m-0"
+                  to={`/courses/${c.id}`}
+                >
+                  Details
+                </Link>
               </td>
             </tr>
           ))}
@@ -108,7 +121,7 @@ const Courses: React.FC = (): JSX.Element => {
           previousLabel={<FcPrevious className="fs-4" />}
           nextLabel={<FcNext className="fs-4" />}
           pageCount={pageCount}
-          onPageChange={handlePageClick}
+          onPageChange={handlePage}
           breakLabel="..."
           containerClassName="pagination d-flex justify-content-center"
           activeLinkClassName="active fw-bold text-decoration-none"
