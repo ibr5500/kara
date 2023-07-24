@@ -1,14 +1,14 @@
 body {
-  background: #F7FFE5;
+  background: #f7ffe5;
 }
 
 .App {
   text-align: center;
-  color: #17594A;
+  color: #17594a;
 }
 
 nav {
-  background: #E1ECC8;
+  background: #e1ecc8;
 }
 
 .logout {
@@ -18,8 +18,8 @@ nav {
 }
 
 .logout:hover {
-  color: #F7FFE5;
-  border-color: #F7FFE5;
+  color: #f7ffe5;
+  border-color: #f7ffe5;
   background-color: #a13d3d;
 }
 
