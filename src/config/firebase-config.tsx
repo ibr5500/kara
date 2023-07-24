@@ -7,14 +7,15 @@ import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyDFzKoK8zDMdKD68emBFImOSTJfwFNg3tU',
-  authDomain: 'kara-backend.firebaseapp.com',
-  projectId: 'kara-backend',
-  storageBucket: 'kara-backend.appspot.com',
-  messagingSenderId: '74834526449',
-  appId: '1:74834526449:web:910434cca29a274bb76950',
-  measurementId: 'G-04NN4Z1PSP',
+  apiKey: 'AIzaSyCHvhqeR8rBHfKWdJyTXOZYFcNGhSGkVcI',
+  authDomain: 'kara2-1c59f.firebaseapp.com',
+  databaseURL: 'https://kara2-1c59f-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId: 'kara2-1c59f',
+  storageBucket: 'kara2-1c59f.appspot.com',
+  messagingSenderId: '763771171645',
+  appId: '1:763771171645:web:ab98f55596298eef568b54',
 };
 
 // Initialize Firebase

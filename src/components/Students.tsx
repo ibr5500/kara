@@ -36,7 +36,7 @@ const Students: React.FC = (): JSX.Element => {
 
   const q2 = query(studentRef, orderBy('creation_at', 'desc'));
 
-  const elems = (searchName === '' && searchDate === '') ? q2 : q;
+  const elems = (searchName === '' || searchDate === '') ? q2 : q;
 
   useEffect((): any => {
     const getdata = async (): Promise<void> => {
@@ -54,7 +54,7 @@ const Students: React.FC = (): JSX.Element => {
   });
 
   return (
-    <Container>
+    <Container className="my-4">
       <Row className="mb-4">
         <Col className="mt-2 d-flex g-4 w-100">
           <FloatingLabel label="Search by name" className="w-50 me-2">
@@ -97,6 +97,7 @@ const Students: React.FC = (): JSX.Element => {
                   <Card.Title>{student.name}</Card.Title>
                   <Card.Text>
                     Joined on:
+                    {' '}
                     {student.creation_at}
                   </Card.Text>
                 </Card.Body>

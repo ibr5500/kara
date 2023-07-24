@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import {
-  Navbar, Button, Nav, Container, Form,
+  Navbar, Button, Nav, Container, Form, Image,
 } from 'react-bootstrap';
 import { signOut } from 'firebase/auth';
 import { auth } from '../config/firebase-config';
@@ -24,12 +24,12 @@ const NavBar: React.FC = (): JSX.Element => {
     <Navbar expand="lg" className="mb-3" sticky="top">
       <Container className="d-flex flex-row">
         <Navbar.Brand href="/">
-          <img
-            src="./kara_nbg.png"
+          <Image
+            src="./assets/logo.WebP"
             width="50"
             height="50"
             className="d-inline-block align-top border border-success rounded-circle"
-            alt="React Bootstrap logo"
+            alt="logo"
           />
         </Navbar.Brand>
         {(auth.currentUser || sessionStorage.getItem('email'))
