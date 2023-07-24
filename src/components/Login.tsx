@@ -77,7 +77,7 @@ const Login: React.FC = (): JSX.Element => {
           aria-labelledby="contained-modal-title-vcenter"
           centered
         >
-          <Modal.Body className="popup-message">Wrong password. Please try again.</Modal.Body>
+          <Modal.Body className="popup-message">Wrong password. Please try this [1 2 3 4 5 6]</Modal.Body>
           <Button
             className="popup-close"
             variant="secondary"
