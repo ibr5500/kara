@@ -11,6 +11,10 @@ nav {
   background: #e1ecc8;
 }
 
+input {
+  background: #f7ffe5;
+}
+
 .logout {
   color: #a13d3d;
   border-color: #a13d3d;
